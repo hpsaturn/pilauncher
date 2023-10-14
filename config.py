@@ -21,6 +21,9 @@ class app:
             self.cur_cmd = 0
         return self.getCurrentCmd()
     
+    def reset(self):
+        self.cur_cmd=0
+    
     def __str__(self):
         out = self.name+':'
         for cmd in self.cmds:

@@ -23,6 +23,11 @@ class AppManager:
     def getCurrentCmd(self):
         app = self.getCurrentApp()
         return app.getCurrentCmd()
+    
+    def reset(self):
+        app = self.getCurrentApp()
+        app.reset()
+        self.cur_app=0
 
 # Basic Test:
 # am = AppManager()

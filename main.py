@@ -1,13 +1,3 @@
-#!/usr/bin/python3
-
-# SPDX-FileCopyrightText: 2017 Tony DiCola for Adafruit Industries
-# SPDX-FileCopyrightText: 2017 James DeVito for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
-# This example is for use on (Linux) computers that are using CPython with
-# Adafruit Blinka to support CircuitPython libraries. CircuitPython does
-# not support PIL/pillow (python imaging library)!
-
 import time
 import subprocess
 
@@ -15,6 +5,7 @@ from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
+from gui import GuiManager
 
 import RPi.GPIO as GPIO
 BTNLFT = 23
@@ -22,6 +13,9 @@ BTNRGT = 6
 
 isBtnRgtPresed = False
 isBtnLftPresed = False
+
+# GUI Apps Manager
+gm = GuiManager()
 
 # Create the I2C interface.
 i2c = busio.I2C(SCL, SDA)
@@ -55,9 +49,13 @@ bottom = height - padding
 # Move left to right keeping track of the current x position for drawing shapes.
 x = 0
 
-
 # Load default font.
 font = ImageFont.load_default()
+
+draw.rectangle((0, 0, width, height), outline=0, fill=0)
+draw.text((x, top + 0), gm.showApp(), font=font, fill=255)
+disp.image(image)
+disp.show()
 
 # Alternatively load a TTF font.  Make sure the .ttf font file is in the
 # same directory as the python script!
@@ -65,18 +63,22 @@ font = ImageFont.load_default()
 # font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
 def dispLftAction():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    draw.text((x, top + 0), gm.showNextApp(), font=font, fill=255)
     disp.image(image)
     disp.show()
+    global isBtnLftPresed
+    isBtnLftPresed = False
 
 def dispRgtAction():
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
-    draw.text((x, top + 0), "Shutdown..", font=font, fill=255)
+    draw.text((x, top + 0), gm.runAction(), font=font, fill=255)
     disp.image(image)
     disp.show()
-    time.sleep(.5)
-    cmd = 'sudo shutdown -h now'
-    cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    
+    global isBtnRgtPresed
+    isBtnRgtPresed = False
+    # time.sleep(.5)
+    # cmd = 'sudo shutdown -h now'
+    # cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 def dispStatsLoop():
     # Draw a black filled box to clear the image.
@@ -108,7 +110,7 @@ def btn_left_cb(button):
     if GPIO.input(button) == GPIO.LOW:
         print("Button LEFT pressed.")
         global isBtnLftPresed
-        isBtnLftPresed = not isBtnLftPresed
+        isBtnLftPresed = True
     else:
         print("Button released.")
 
@@ -132,8 +134,12 @@ while True:
         dispLftAction()
     elif isBtnRgtPresed:
         dispRgtAction()
-    else:
-        dispStatsLoop()
+    # else:
+        # dispStatsLoop()
     
     time.sleep(1)
+
+
+
+
 
