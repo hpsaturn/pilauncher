@@ -15,6 +15,7 @@ from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
+from config import config
 
 import RPi.GPIO as GPIO
 BTNLFT = 23
