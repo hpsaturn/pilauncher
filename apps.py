@@ -3,7 +3,7 @@ from config import config
 class AppManager:
 
     def __init__(self):
-        self.cfg = config('config.yml')
+        self.cfg = config('/home/pi/pihead/config.yml')
         self.app_count = self.cfg.getAppsCount()
         self.cur_app = 0
     
