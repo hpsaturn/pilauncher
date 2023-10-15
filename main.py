@@ -61,6 +61,11 @@ def showString(msg):
     disp.image(image)
     disp.show()
 
+def showStatus(msg):
+    draw.text((x, top + 25), msg, font=font, fill=255)
+    disp.image(image)
+    disp.show()
+
 def showMain():
     showString(gm.showApp())
 
@@ -83,6 +88,7 @@ def runAction():
             showString(gm.runBack())
             return
         try:
+            showStatus("loading..")
             cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
             print("exec_msg: "+cmdmsg)
             showString(gm.runBack())
@@ -100,9 +106,6 @@ def dispRgtAction():
     runAction()
     global isBtnRgtPresed
     isBtnRgtPresed = False
-    # time.sleep(.5)
-    # cmd = 'sudo shutdown -h now'
-    # cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 def dispStatsLoop():
     # Draw a black filled box to clear the image.
@@ -131,17 +134,17 @@ def dispStatsLoop():
     disp.show()
 
 def btn_left_cb(button):
-    if GPIO.input(button) == GPIO.LOW:
+    global isBtnLftPresed
+    if not isBtnLftPresed and GPIO.input(button) == GPIO.LOW:
         print("Button LEFT pressed.")
-        global isBtnLftPresed
         isBtnLftPresed = True
         global onStats
         onStats = False
 
 def btn_right_cb(button):
-    if GPIO.input(button) == GPIO.LOW:
+    global isBtnRgtPresed
+    if not isBtnRgtPresed and GPIO.input(button) == GPIO.LOW:
         print("Button RIGHT pressed.")
-        global isBtnRgtPresed
         isBtnRgtPresed = True
         global onStats
         onStats = False
@@ -158,9 +161,4 @@ while True:
     if onStats:
         dispStatsLoop()
     
-    time.sleep(1)
-
-
-
-
-
+    time.sleep(0.500)
