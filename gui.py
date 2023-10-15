@@ -21,16 +21,21 @@ class GuiManager():
             self.am.getNextCmd()
         return self.showApp()
     
+    def runBack(self):
+        self.wlevel=0
+        self.am.reset()
+        return self.showApp()
+    
     def runAction(self):
         if self.wlevel==0:
             self.wlevel=1
+            return self.showApp()
         else:
             command = self.am.getCurrentCmd().command
-            print('execute: '+command)
             if command == 'back':
-                self.wlevel=0
-                self.am.reset()
-        return self.showApp()
+                return self.runBack()
+            else:
+                return 'exec::'+command
 
 
 # gm = GuiManager()

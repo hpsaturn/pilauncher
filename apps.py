@@ -27,7 +27,7 @@ class AppManager:
     def reset(self):
         app = self.getCurrentApp()
         app.reset()
-        self.cur_app=0
+        # self.cur_app=0
 
 # Basic Test:
 # am = AppManager()

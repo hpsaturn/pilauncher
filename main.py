@@ -50,30 +50,50 @@ bottom = height - padding
 x = 0
 
 # Load default font.
-font = ImageFont.load_default()
+# font = ImageFont.load_default()
+# font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 28)
+font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
 
-draw.rectangle((0, 0, width, height), outline=0, fill=0)
-draw.text((x, top + 0), gm.showApp(), font=font, fill=255)
-disp.image(image)
-disp.show()
 
-# Alternatively load a TTF font.  Make sure the .ttf font file is in the
-# same directory as the python script!
-# Some other nice fonts to try: http://www.dafont.com/bitmap.php
-# font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
-def dispLftAction():
+def showString(msg):
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
-    draw.text((x, top + 0), gm.showNextApp(), font=font, fill=255)
+    draw.text((x, top + 0), msg, font=font, fill=255)
     disp.image(image)
     disp.show()
+
+def showMain():
+    showString(gm.showApp())
+
+def setup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
+    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
+    showMain()
+
+def runAction():
+    msg=gm.runAction()
+    if 'exec::' in msg:
+        cmd=msg.lstrip('exec::')
+        print("exec: "+cmd)
+        try:
+            cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
+            print("exec_msg: "+cmdmsg)
+            showString(gm.runBack())
+        except:
+            showString('exec fail')
+    else:
+        showString(msg)
+
+
+def dispLftAction():
+    showString(gm.showNextApp())
     global isBtnLftPresed
     isBtnLftPresed = False
 
 def dispRgtAction():
-    draw.rectangle((0, 0, width, height), outline=0, fill=0)
-    draw.text((x, top + 0), gm.runAction(), font=font, fill=255)
-    disp.image(image)
-    disp.show()
+    runAction()
     global isBtnRgtPresed
     isBtnRgtPresed = False
     # time.sleep(.5)
@@ -111,22 +131,14 @@ def btn_left_cb(button):
         print("Button LEFT pressed.")
         global isBtnLftPresed
         isBtnLftPresed = True
-    else:
-        print("Button released.")
 
 def btn_right_cb(button):
     if GPIO.input(button) == GPIO.LOW:
         print("Button RIGHT pressed.")
         global isBtnRgtPresed
         isBtnRgtPresed = True
-    else:
-        print("Button released.")
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
-GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
+setup()
 
 while True:
     
