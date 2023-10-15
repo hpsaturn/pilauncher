@@ -13,6 +13,7 @@ BTNRGT = 6
 
 isBtnRgtPresed = False
 isBtnLftPresed = False
+onStats = False
 
 # GUI Apps Manager
 gm = GuiManager()
@@ -50,14 +51,13 @@ bottom = height - padding
 x = 0
 
 # Load default font.
-# font = ImageFont.load_default()
 # font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 28)
-font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
-
+font = ImageFont.load_default()
+fontBig = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
 
 def showString(msg):
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
-    draw.text((x, top + 0), msg, font=font, fill=255)
+    draw.text((x, top + 0), msg, font=fontBig, fill=255)
     disp.image(image)
     disp.show()
 
@@ -77,6 +77,11 @@ def runAction():
     if 'exec::' in msg:
         cmd=msg.lstrip('exec::')
         print("exec: "+cmd)
+        if cmd == 'stats':
+            global onStats
+            onStats = True
+            showString(gm.runBack())
+            return
         try:
             cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
             print("exec_msg: "+cmdmsg)
@@ -85,7 +90,6 @@ def runAction():
             showString('exec fail')
     else:
         showString(msg)
-
 
 def dispLftAction():
     showString(gm.showNextApp())
@@ -131,12 +135,16 @@ def btn_left_cb(button):
         print("Button LEFT pressed.")
         global isBtnLftPresed
         isBtnLftPresed = True
+        global onStats
+        onStats = False
 
 def btn_right_cb(button):
     if GPIO.input(button) == GPIO.LOW:
         print("Button RIGHT pressed.")
         global isBtnRgtPresed
         isBtnRgtPresed = True
+        global onStats
+        onStats = False
 
 setup()
 
@@ -146,8 +154,9 @@ while True:
         dispLftAction()
     elif isBtnRgtPresed:
         dispRgtAction()
-    # else:
-        # dispStatsLoop()
+
+    if onStats:
+        dispStatsLoop()
     
     time.sleep(1)
 
