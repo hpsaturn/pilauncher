@@ -4,6 +4,8 @@ class app:
     def __init__(self,name):
         self.name = name
         self.cmds = []
+        self.sta_cmd = ''
+        self.status = ''
         self.cur_cmd = 0
 
     def get_name(self):
@@ -25,7 +27,7 @@ class app:
         self.cur_cmd=0
     
     def __str__(self):
-        out = self.name+':'
+        out = self.name+':\r\n'+'status cmd: '+self.sta_cmd
         for cmd in self.cmds:
             out=out+'\r\n'+cmd.name+' -> '+cmd.command
         return f"{out}"
@@ -47,8 +49,11 @@ class config:
             for cmds in dict.fromkeys(doc[name]):
                 # print(' '+cmds+' -> '+doc[name][cmds]['cmd'])
                 cmd = app(cmds)
-                cmd.command = doc[name][cmds]['cmd']
-                ap.add_cmd(cmd)
+                if cmds == 'Status':
+                    ap.sta_cmd=doc[name][cmds]['cmd']
+                else:
+                    cmd.command = doc[name][cmds]['cmd']
+                    ap.add_cmd(cmd)
             
             self.apps.append(ap)
 
@@ -60,7 +65,6 @@ class config:
         for app in self.apps:
             out=out+str(app)+'\r\n'
         return f"{out}"
-
 
 
 # ac = config('config.yml')

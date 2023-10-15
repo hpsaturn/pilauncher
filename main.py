@@ -51,7 +51,6 @@ bottom = height - padding
 x = 0
 
 # Load default font.
-# font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 28)
 font = ImageFont.load_default()
 fontBig = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
 
@@ -92,6 +91,11 @@ def runAction():
             cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
             print("exec_msg: "+cmdmsg)
             showString(gm.runBack())
+            if gm.getAppStatusCmd() != None:
+                status = subprocess.check_output(gm.getAppStatusCmd(), shell=True).decode("utf-8")
+                print('status output:\r\n'+status)
+                gm.am.getCurrentApp().status=status
+                showStatus(status)
         except:
             showString('exec fail')
     else:
@@ -99,6 +103,7 @@ def runAction():
 
 def dispLftAction():
     showString(gm.showNextApp())
+    showStatus(gm.getAppStatus())
     global isBtnLftPresed
     isBtnLftPresed = False
 
@@ -160,5 +165,6 @@ while True:
 
     if onStats:
         dispStatsLoop()
-    
-    time.sleep(0.500)
+        time.sleep(2)
+    else:
+        time.sleep(0.500)

@@ -21,6 +21,18 @@ class GuiManager():
             self.am.getNextCmd()
         return self.showApp()
     
+    def getAppStatusCmd(self):
+        if self.wlevel == 0:
+            return self.am.getCurrentApp().sta_cmd
+        else:
+            return None
+    
+    def getAppStatus(self):
+        if self.wlevel == 0:
+            return self.am.getCurrentApp().status
+        else:
+            return ''
+    
     def runBack(self):
         self.wlevel=0
         self.am.reset()
