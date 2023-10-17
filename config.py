@@ -36,6 +36,7 @@ class app:
 class config:
     def __init__(self,config):
         self.apps = []
+        self.status_reg = []
         with open(config, 'r') as file:
             docs = yaml.safe_load_all(file)
             for doc in docs:
@@ -49,8 +50,10 @@ class config:
             for cmds in dict.fromkeys(doc[name]):
                 # print(' '+cmds+' -> '+doc[name][cmds]['cmd'])
                 cmd = app(cmds)
+                # check if app contains status command and register it
                 if cmds == 'Status':
                     ap.sta_cmd=doc[name][cmds]['cmd']
+                    self.status_reg.append(ap)
                 else:
                     cmd.command = doc[name][cmds]['cmd']
                     ap.add_cmd(cmd)

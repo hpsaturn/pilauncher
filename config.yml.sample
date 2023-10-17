@@ -1,0 +1,53 @@
+---
+HOTSPOT:
+  Hotspot OFF:
+    cmd: sudo nmcli con down Hotspot
+  Hotspot ON:
+    cmd: sudo nmcli con up Hotspot
+  Status:
+    cmd: nmcli c show --active | grep wlan0 | awk '{if(/Hotspot/) print "ready on",$4}'
+  Back:
+    cmd: back
+
+---
+WIFI:
+  WiFi On:
+    cmd: sudo nmcli connection up FRITZ\!Box\ 7430\ LF
+  WiFi Off:
+    cmd: sudo nmcli connection down FRITZ\!Box\ 7430\ LF
+  Status:
+    cmd: nmcli c show --active | grep wlan0 | awk '{if(/FRITZ\!Box\ 7430\ LF/) print "connected:",$1}'
+  Back:
+    cmd: back
+
+---
+VPN:
+  Colombia:
+    cmd: nordvpn connect Colombia
+  Argentina:
+    cmd: nordvpn connect Argentina
+  VPN Off:
+    cmd: nordvpn disconnect
+  Status:
+    cmd: nordvpn status | head -n 1 | awk '{if(/Status:/) print $4}'
+  Back:
+    cmd: back
+
+SYSTEM:
+  Stats:
+    cmd: stats
+  Shutdown:
+    cmd: sudo shutdown -h now
+  Reboot:
+    cmd: sudo reboot
+  Back:
+    cmd: back
+
+# ---
+# EMULATORS:
+#   RetroPi:
+#     cmd: echo "running RetroPi"
+#   DOSBox:
+#     cmd: echo "running RetroPi"
+#   Back:
+#     cmd: back

@@ -1,5 +1,6 @@
 import time
 import subprocess
+import threading
 
 from board import SCL, SDA
 import busio
@@ -14,6 +15,7 @@ BTNRGT = 6
 isBtnRgtPresed = False
 isBtnLftPresed = False
 onStats = False
+onStatusTask = False
 
 # GUI Apps Manager
 gm = GuiManager()
@@ -61,6 +63,7 @@ def showString(msg):
     disp.show()
 
 def showStatus(msg):
+    # draw.rectangle((0, top + 25, width, 6), outline=0, fill=0)
     draw.text((x, top + 25), msg, font=font, fill=255)
     disp.image(image)
     disp.show()
@@ -68,13 +71,12 @@ def showStatus(msg):
 def showMain():
     showString(gm.showApp())
 
-def setup():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
-    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
-    showMain()
+def updateAppStatus():
+    if gm.getAppStatusCmd() != None:
+        status = subprocess.check_output(gm.getAppStatusCmd(), shell=True).decode("utf-8")
+        print(gm.am.getCurrentApp().name+' status: '+status)
+        gm.am.getCurrentApp().status=status
+        showStatus(status)
 
 def runAction():
     msg=gm.runAction()
@@ -91,11 +93,8 @@ def runAction():
             cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
             print("exec_msg: "+cmdmsg)
             showString(gm.runBack())
-            if gm.getAppStatusCmd() != None:
-                status = subprocess.check_output(gm.getAppStatusCmd(), shell=True).decode("utf-8")
-                print('status output:\r\n'+status)
-                gm.am.getCurrentApp().status=status
-                showStatus(status)
+            updateAppStatus()
+             
         except:
             showString('exec fail')
     else:
@@ -154,14 +153,47 @@ def btn_right_cb(button):
         global onStats
         onStats = False
 
-setup()
+def statusThread():
+    global onStatusTask
+    updateAppStatus()
+    app = gm.am.getNextPendingApp()
+    if app != None:
+        try:
+            status = subprocess.check_output(app.sta_cmd, shell=True).decode("utf-8")
+            app.status = status
+            print(app.name+' status: '+status)
+            time.sleep(15)
+        except:
+            print("status refresh fails!")
+        onStatusTask = False
 
+def startStatusTask():
+    global onStatusTask
+    onStatusTask = True
+    # Launch app status refresh thread
+    x = threading.Thread(target=statusThread)
+    x.start()
+
+# GPIO setup
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
+GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
+# Show initial app
+showMain()
+updateAppStatus()
+
+# Main loop:
 while True:
     
     if isBtnLftPresed:
         dispLftAction()
     elif isBtnRgtPresed:
         dispRgtAction()
+
+    if not onStatusTask:
+        startStatusTask()
 
     if onStats:
         dispStatsLoop()
