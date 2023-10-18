@@ -163,7 +163,8 @@ def statusThread():
             status = subprocess.check_output(app.sta_cmd, shell=True).decode("utf-8")
             app.status = status
             print(app.name+' status: '+status)
-            updateAppStatus()
+            if app.name != gm.am.getCurrentApp().name:
+                updateAppStatus()
             time.sleep(10)
         except:
             print("status refresh fails!")
@@ -194,11 +195,10 @@ while True:
     elif isBtnRgtPresed:
         dispRgtAction()
 
-    if not onStatusTask:
-        startStatusTask()
-
     if onStats:
         dispStatsLoop()
         time.sleep(2)
     else:
+        if not onStatusTask:
+            startStatusTask()
         time.sleep(0.500)
