@@ -155,7 +155,6 @@ def btn_right_cb(button):
 
 def statusThread():
     global onStatusTask
-    updateAppStatus()
     app = gm.am.getNextPendingApp()
     if app != None:
         try:
