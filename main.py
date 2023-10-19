@@ -18,7 +18,9 @@ BTNRGT = 6
 isBtnRgtPresed = False
 isBtnLftPresed = False
 onStats = False
-onStatusTask = False
+
+onAppStatusTask = False
+onSystemStatsTask = False
 
 # GUI Apps Manager
 gm = GuiManager()
@@ -116,7 +118,10 @@ def dispRgtAction():
     global isBtnRgtPresed
     isBtnRgtPresed = False
 
-def dispStatsLoop():
+def systemStatsThread():
+    # skip if display is off (power consumption improvement)
+    if not disp.power:
+        return
     # Draw a black filled box to clear the image.
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
@@ -141,6 +146,9 @@ def dispStatsLoop():
     # Display image.
     disp.image(image)
     disp.show()
+    global onSystemStatsTask
+    onSystemStatsTask = False
+    time.sleep(2)
 
 def screenOffTimerReset():
     global timer_screen
@@ -177,8 +185,8 @@ def btn_right_cb(button):
         global onStats
         onStats = False
 
-def statusThread():
-    global onStatusTask
+def appStatusThread():
+    global onAppStatusTask
     app = gm.am.getNextPendingApp()
     if app != None:
         try:
@@ -190,14 +198,21 @@ def statusThread():
             time.sleep(10)
         except:
             print("status refresh fails!")
-        onStatusTask = False
+        onAppStatusTask = False
 
-def startStatusTask():
-    global onStatusTask
-    onStatusTask = True
+def startSystemStatsTask():
+    global onSystemStatsTask
+    onSystemStatsTask = True
     # Launch app status refresh thread
-    x = threading.Thread(target=statusThread)
-    x.start()
+    thr = threading.Thread(target=systemStatsThread)
+    thr.start()
+
+def startAppStatusTask():
+    global onAppStatusTask
+    onAppStatusTask = True
+    # Launch app status refresh thread
+    thr = threading.Thread(target=appStatusThread)
+    thr.start()
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
@@ -217,12 +232,10 @@ while True:
     elif isBtnRgtPresed:
         dispRgtAction()
 
-    if onStats:
-        dispStatsLoop()
-        time.sleep(5)
-    else:
-        if not onStatusTask:
-            startStatusTask()
-        time.sleep(0.500)
-    
+    if onStats and not onSystemStatsTask:
+        startSystemStatsTask()
+    if not onStats and not onAppStatusTask:
+        startAppStatusTask()
+        
     screenOffLoop()
+    time.sleep(0.500)
