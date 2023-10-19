@@ -107,20 +107,11 @@ def runAction():
     else:
         showString(msg)
 
-def dispLftAction():
-    showString(gm.showNextApp())
-    showStatus(gm.getAppStatus())
-    global isBtnLftPresed
-    isBtnLftPresed = False
-
-def dispRgtAction():
-    runAction()
-    global isBtnRgtPresed
-    isBtnRgtPresed = False
-
 def systemStatsThread():
+    global onSystemStatsTask
     # skip if display is off (power consumption improvement)
     if not disp.power:
+        onSystemStatsTask = False
         return
     # Draw a black filled box to clear the image.
     draw.rectangle((0, 0, width, height), outline=0, fill=0)
@@ -146,14 +137,14 @@ def systemStatsThread():
     # Display image.
     disp.image(image)
     disp.show()
-    global onSystemStatsTask
-    onSystemStatsTask = False
     time.sleep(2)
+    onSystemStatsTask = False
 
 def screenOffTimerReset():
     global timer_screen
     timer_screen = time.time()
-    disp.poweron()
+    if not disp.power:
+        disp.poweron()
 
 def screenOffLoop():
     if not cfg.auto_screen_off:
@@ -173,6 +164,10 @@ def btn_left_cb(button):
         isBtnLftPresed = True 
         global onStats
         onStats = False
+        showString(gm.showNextApp())
+        showStatus(gm.getAppStatus())
+        screenOffTimerReset()
+        isBtnLftPresed = False
 
 def btn_right_cb(button):
     global isBtnRgtPresed
@@ -184,6 +179,9 @@ def btn_right_cb(button):
         isBtnRgtPresed = True
         global onStats
         onStats = False
+        runAction()
+        screenOffTimerReset()
+        isBtnRgtPresed = False
 
 def appStatusThread():
     global onAppStatusTask
@@ -227,15 +225,11 @@ updateAppStatus()
 # Main loop:
 while True:
     
-    if isBtnLftPresed:
-        dispLftAction()
-    elif isBtnRgtPresed:
-        dispRgtAction()
-
     if onStats and not onSystemStatsTask:
         startSystemStatsTask()
     if not onStats and not onAppStatusTask:
         startAppStatusTask()
         
     screenOffLoop()
-    time.sleep(0.500)
+
+    time.sleep(1)
