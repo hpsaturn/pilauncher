@@ -70,7 +70,7 @@ def showString(msg):
 
 def showStatus(msg):
     print("showing status: "+msg)
-    draw.rectangle((0, 18, width, height - 1), outline=0, fill=0)
+    draw.rectangle((0, 18, width-1, height - 1), outline=0, fill=0)
     draw.text((x, top + 25), msg, font=font, fill=255)
     disp.image(image)
     disp.show()
@@ -107,6 +107,7 @@ def runAction():
             showString('exec fail')
     else:
         showString(msg)
+        showStatus(gm.getAppStatus())
 
 def systemStatsThread():
     global onSystemStatsTask
@@ -188,6 +189,9 @@ def btn_right_cb(button):
 
 def appStatusThread():
     global onAppStatusTask
+    if not disp.power:
+        onAppStatusTask = False
+        return
     app = gm.am.getNextPendingApp()
     if app != None:
         try:
