@@ -162,6 +162,7 @@ def btn_left_cb(button):
         if not disp.power:
             screenOffTimerReset()
             return
+        screenOffTimerReset()
         isBtnLftPresed = True 
         global onStats
         onStats = False
@@ -173,6 +174,7 @@ def btn_right_cb(button):
         if not disp.power:
             screenOffTimerReset()
             return
+        screenOffTimerReset()
         isBtnRgtPresed = True
         global onStats
         onStats = False
@@ -219,7 +221,7 @@ while True:
 
     if onStats:
         dispStatsLoop()
-        time.sleep(5)
+        time.sleep(2)
     else:
         if not onStatusTask:
             startStatusTask()
