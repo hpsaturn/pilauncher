@@ -22,6 +22,9 @@ onStatusTask = False
 
 # GUI Apps Manager
 gm = GuiManager()
+cfg = gm.getConfig()
+
+timer_screen = time.time()
 
 # Create the I2C interface.
 i2c = board.I2C()
@@ -139,11 +142,27 @@ def dispStatsLoop():
     disp.image(image)
     disp.show()
 
+def screenOffTimerReset():
+    global timer_screen
+    timer_screen = time.time()
+    disp.poweron()
+
+def screenOffLoop():
+    if not cfg.auto_screen_off:
+        return
+    if not disp.power:
+        return
+    if time.time() - timer_screen > cfg.screen_time_off:
+        disp.poweroff()
+
 def btn_left_cb(button):
     global isBtnLftPresed
     if not isBtnLftPresed and GPIO.input(button) == GPIO.LOW:
         print("Button LEFT pressed.")
-        isBtnLftPresed = True
+        if not disp.power:
+            screenOffTimerReset()
+            return
+        isBtnLftPresed = True 
         global onStats
         onStats = False
 
@@ -151,6 +170,9 @@ def btn_right_cb(button):
     global isBtnRgtPresed
     if not isBtnRgtPresed and GPIO.input(button) == GPIO.LOW:
         print("Button RIGHT pressed.")
+        if not disp.power:
+            screenOffTimerReset()
+            return
         isBtnRgtPresed = True
         global onStats
         onStats = False
@@ -197,8 +219,10 @@ while True:
 
     if onStats:
         dispStatsLoop()
-        time.sleep(2)
+        time.sleep(5)
     else:
         if not onStatusTask:
             startStatusTask()
         time.sleep(0.500)
+    
+    screenOffLoop()

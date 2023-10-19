@@ -33,6 +33,7 @@ VPN:
   Back:
     cmd: back
 
+---
 SYSTEM:
   Stats:
     cmd: stats

@@ -34,7 +34,7 @@ class app:
     
 
 class config:
-    def __init__(self,config):
+    def __init__(self,config, settings):
         self.apps = []
         self.status_reg = []
         with open(config, 'r') as file:
@@ -42,6 +42,15 @@ class config:
             for doc in docs:
                 # self.app_count = self.app_count+1
                 self.laod_app(doc)
+        
+        # settings:
+        self.screen_time_off = 30
+        self.auto_screen_off = True
+
+        with open(settings, 'r') as file:
+            presets = yaml.safe_load(file)
+            self.screen_time_off = presets['screen_time_off']
+            self.auto_screen_off = presets['auto_screen_off']
 
     def laod_app(self, doc):
         for name in dict.fromkeys(doc):

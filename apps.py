@@ -3,8 +3,9 @@ from config import config
 class AppManager:
 
     def __init__(self):
-        self.cfg = config('/home/pi/pihead/config.yml')
-        # self.cfg = config('config.yml')
+        # self.cfg = config('/home/pi/pihead/apps.yml')
+        # self.cfg = config('apps.yml','settings.yml')
+        self.cfg = config('/home/pi/pihead/apps.yml','/home/pi/pihead/settings.yml')
         self.app_count = self.cfg.getAppsCount()
         self.cur_app = 0
         self.app_status_count = len(self.cfg.status_reg)
@@ -43,6 +44,8 @@ class AppManager:
 
 # Basic Test:
 # am = AppManager()
+# print(am.cfg.auto_screen_off)
+# print(am.cfg.screen_time_off)
 # app = am.getCurrentApp()
 # print(am.getCurrentCmd().command)
 

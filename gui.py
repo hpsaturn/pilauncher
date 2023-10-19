@@ -48,6 +48,10 @@ class GuiManager():
                 return self.runBack()
             else:
                 return 'exec::'+command
+            
+    def getConfig(self):
+        return self.am.cfg
+            
 
 
 # gm = GuiManager()
