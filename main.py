@@ -91,9 +91,10 @@ def runAction():
         cmd=msg.lstrip('exec::')
         print("exec: "+cmd)
         if cmd == 'stats':
+            showStatus("loading..")
             global onStats
             onStats = True
-            showString(gm.runBack())
+            gm.runBack()
             return
         try:
             showStatus("loading..")
@@ -157,11 +158,12 @@ def screenOffLoop():
 def btn_left_cb(button):
     global isBtnLftPresed
     if not isBtnLftPresed and GPIO.input(button) == GPIO.LOW:
+        isBtnLftPresed = True 
         print("Button LEFT pressed.")
         if not disp.power:
             screenOffTimerReset()
+            isBtnLftPresed = False
             return
-        isBtnLftPresed = True 
         global onStats
         onStats = False
         showString(gm.showNextApp())
@@ -172,11 +174,12 @@ def btn_left_cb(button):
 def btn_right_cb(button):
     global isBtnRgtPresed
     if not isBtnRgtPresed and GPIO.input(button) == GPIO.LOW:
+        isBtnRgtPresed = True
         print("Button RIGHT pressed.")
         if not disp.power:
             screenOffTimerReset()
+            isBtnRgtPresed = False
             return
-        isBtnRgtPresed = True
         global onStats
         onStats = False
         runAction()
