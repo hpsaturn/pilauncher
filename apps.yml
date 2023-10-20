@@ -1,8 +1,8 @@
 ---
 HOTSPOT:
-  Hotspot OFF:
+  Hotspot Off:
     cmd: sudo nmcli con down Hotspot
-  Hotspot ON:
+  Hotspot On:
     cmd: sudo nmcli con up Hotspot
   Status:
     cmd: nmcli c show --active | grep wlan0 | awk '{if(/Hotspot/) print "ready on",$4}'
