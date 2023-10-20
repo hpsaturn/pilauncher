@@ -1,4 +1,4 @@
 ---
 auto_screen_off: True
-screen_time_off: 30
-
+screen_time_off: 20
+info_refresh_rate : 3

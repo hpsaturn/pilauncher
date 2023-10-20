@@ -8,6 +8,11 @@ class app:
         self.status = ''
         self.cur_cmd = 0
 
+        self.info_cmd_l1 = ''
+        self.info_cmd_l2 = ''
+        self.info_cmd_l3 = ''
+        self.info_cmd_l4 = ''
+    
     def get_name(self):
         return self.name
     
@@ -43,14 +48,23 @@ class config:
                 # self.app_count = self.app_count+1
                 self.laod_app(doc)
         
-        # settings:
-        self.screen_time_off = 30
-        self.auto_screen_off = True
-
-        with open(settings, 'r') as file:
-            presets = yaml.safe_load(file)
-            self.screen_time_off = presets['screen_time_off']
-            self.auto_screen_off = presets['auto_screen_off']
+        # settings: 
+        try:
+            with open(settings, 'r') as file:
+                presets = yaml.safe_load(file)
+                self.screen_time_off = presets['screen_time_off']
+                self.auto_screen_off = presets['auto_screen_off']
+                self.info_refresh_rate = presets['info_refresh_rate']
+        except:
+            print("bad settings file, load defaults..")
+            self.screen_time_off = 30
+            self.auto_screen_off = True
+            self.info_refresh_rate = 2
+        
+        print("settings:")
+        print('screen_time_off: '+str(self.screen_time_off))
+        print('auto_screen_off: '+str(self.auto_screen_off))
+        print('info_refresh_rate: '+str(self.info_refresh_rate))
 
     def laod_app(self, doc):
         for name in dict.fromkeys(doc):
@@ -63,6 +77,14 @@ class config:
                 if cmds == 'Status':
                     ap.sta_cmd=doc[name][cmds]['cmd']
                     self.status_reg.append(ap)
+                # check if app contains info or stats section and register it
+                elif cmds == 'Stats' or cmds == 'Info':
+                    ap.info_cmd_l1=doc[name][cmds]['l1']
+                    ap.info_cmd_l2=doc[name][cmds]['l2']
+                    ap.info_cmd_l3=doc[name][cmds]['l3']
+                    ap.info_cmd_l4=doc[name][cmds]['l4']
+                    cmd.command = 'stats'
+                    ap.add_cmd(cmd)
                 else:
                     cmd.command = doc[name][cmds]['cmd']
                     ap.add_cmd(cmd)

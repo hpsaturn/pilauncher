@@ -62,20 +62,16 @@ def systemStatsThread():
         onSystemStatsTask = False
         return
     
-    # Shell scripts for system monitoring from here:
-    # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
-    cmd = "hostname -I | cut -d' ' -f1"
-    IP = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    cmd = 'cut -f 1 -d " " /proc/loadavg'
-    CPU = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%s MB  %.2f%%\", $3,$2,$3*100/$2 }'"
-    MemUsage = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    cmd = 'df -h | awk \'$NF=="/"{printf "Disk: %d/%d GB  %s", $3,$2,$5}\''
-    Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    app = gui.am.getCurrentApp()
+
+    l1 = subprocess.check_output(app.info_cmd_l1, shell=True).decode("utf-8")
+    l2 = subprocess.check_output(app.info_cmd_l2, shell=True).decode("utf-8")
+    l3 = subprocess.check_output(app.info_cmd_l3, shell=True).decode("utf-8")
+    l4 = subprocess.check_output(app.info_cmd_l4, shell=True).decode("utf-8")
 
     # Write four lines of text.
-    dsp.showFourLines("IP: " + IP, "CPU load: " + CPU, MemUsage, Disk)
-    time.sleep(2)
+    dsp.showFourLines(l1,l2,l3,l4)
+    time.sleep(cfg.info_refresh_rate)
     onSystemStatsTask = False
 
 def startSystemStatsTask():
