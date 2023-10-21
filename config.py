@@ -55,11 +55,13 @@ class config:
                 self.screen_time_off = presets['screen_time_off']
                 self.auto_screen_off = presets['auto_screen_off']
                 self.info_refresh_rate = presets['info_refresh_rate']
+                self.status_refresh_rate = presets['status_refresh_rate']
         except:
             print("bad settings file, load defaults..")
             self.screen_time_off = 30
             self.auto_screen_off = True
-            self.info_refresh_rate = 2
+            self.info_refresh_rate = 3
+            self.status_refresh_rate = 5
         
         print("settings:")
         print('screen_time_off: '+str(self.screen_time_off))

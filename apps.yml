@@ -1,5 +1,10 @@
 ---
 HOTSPOT:
+  Info:
+    l1: sudo nmcli c show Hotspot | grep STATE | awk '{print "stat:",$2}'
+    l2: sudo nmcli c show Hotspot | grep 'wireless.ssid' | awk '{print "ssid:",$2}'
+    l3: sudo nmcli c show eth0 | grep ADDRESS | awk '{print "eth0:",$2}'
+    l4: sudo nmcli c show Hotspot | grep ADDRESS | awk '{print "wln0:",$2}'
   Hotspot Off:
     cmd: sudo nmcli con down Hotspot
   Hotspot On:
@@ -22,15 +27,15 @@ WIFI:
 
 ---
 VPN:
-  Colombia:
-    cmd: nordvpn connect Colombia
-  Argentina:
-    cmd: nordvpn connect Argentina
   Info:
-    l1: nordvpn status | grep Country | awk '{if(/Country:/) print $2}'
+    l1: /home/pi/bin/vpnstatus.sh
     l2: nordvpn status | grep City | awk '{if(/City:/) print "City:",$2}'
     l3: nordvpn status | grep IP | awk '{if(/IP:/) print "IP:",$2}'
     l4: nordvpn status | grep Transfer | awk '{if(/Transfer:/) print $2.$3,"/",$5.$6}'
+  Colombia:
+    cmd: nordvpn connect Colombia
+  Argentina:
+    cmd: nordvpn connect Argentina 
   VPN Off:
     cmd: nordvpn disconnect
   Status:

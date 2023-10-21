@@ -94,7 +94,7 @@ def appStatusThread():
             print(app.name+' status: '+status)
             if app.name != gui.am.getCurrentApp().name:
                 updateAppStatus()
-            time.sleep(10)
+            time.sleep(cfg.status_refresh_rate)
         except:
             print("status refresh fails!")
         onAppStatusTask = False
