@@ -63,14 +63,11 @@ def systemStatsThread():
         return
     
     app = gui.am.getCurrentApp()
+    lines = []
+    for info_cmd in app.info_cmds:
+        lines.append(str(subprocess.check_output(info_cmd, shell=True).decode("utf-8")))
+    dsp.showInfoLines(lines)
 
-    l1 = subprocess.check_output(app.info_cmd_l1, shell=True).decode("utf-8")
-    l2 = subprocess.check_output(app.info_cmd_l2, shell=True).decode("utf-8")
-    l3 = subprocess.check_output(app.info_cmd_l3, shell=True).decode("utf-8")
-    l4 = subprocess.check_output(app.info_cmd_l4, shell=True).decode("utf-8")
-
-    # Write four lines of text.
-    dsp.showFourLines(l1,l2,l3,l4)
     time.sleep(cfg.info_refresh_rate)
     onSystemStatsTask = False
 

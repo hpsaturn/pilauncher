@@ -59,13 +59,13 @@ class Display:
         self.disp.show()
         self.mutex.release()
 
-    def showFourLines(self, l1, l2, l3, l4):
+    def showInfoLines(self, lines):
         self.mutex.acquire()
         self.draw.rectangle((0, 0, self.w, self.h), outline=0, fill=0)
-        self.draw.text((self.x, self.top + 0),  l1, font=self.fntS, fill=255)
-        self.draw.text((self.x, self.top + 8),  l2, font=self.fntS, fill=255)
-        self.draw.text((self.x, self.top + 16), l3, font=self.fntS, fill=255)
-        self.draw.text((self.x, self.top + 25), l4, font=self.fntS, fill=255)
+        pos = 0
+        for line in lines:
+            self.draw.text((self.x, self.top + pos),  line, font=self.fntS, fill=255)
+            pos = pos + 8
         self.disp.image(self.image)
         self.disp.show()
         self.mutex.release()

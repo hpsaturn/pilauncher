@@ -3,16 +3,17 @@ import yaml
 class app:
     def __init__(self,name):
         self.name = name
+        # app commands
         self.cmds = []
-        self.sta_cmd = ''
-        self.status = ''
+        # current command
         self.cur_cmd = 0
-
-        self.info_cmd_l1 = ''
-        self.info_cmd_l2 = ''
-        self.info_cmd_l3 = ''
-        self.info_cmd_l4 = ''
-    
+        # app status command
+        self.sta_cmd = ''
+        # current status
+        self.status = ''
+        # info commands:
+        self.info_cmds = []
+   
     def get_name(self):
         return self.name
     
@@ -81,10 +82,8 @@ class config:
                     self.status_reg.append(ap)
                 # check if app contains info or stats section and register it
                 elif cmds == 'Stats' or cmds == 'Info':
-                    ap.info_cmd_l1=doc[name][cmds]['l1']
-                    ap.info_cmd_l2=doc[name][cmds]['l2']
-                    ap.info_cmd_l3=doc[name][cmds]['l3']
-                    ap.info_cmd_l4=doc[name][cmds]['l4']
+                    for info_cmds_key in dict.fromkeys(doc[name][cmds]):
+                        ap.info_cmds.append(doc[name][cmds][info_cmds_key])
                     cmd.command = 'stats'
                     ap.add_cmd(cmd)
                 else:
@@ -103,7 +102,7 @@ class config:
         return f"{out}"
 
 
-# ac = config('config.yml')
+# ac = config('apps.yml','settings.yml')
 # print(ac)
 
 # print(ac.apps[0])
