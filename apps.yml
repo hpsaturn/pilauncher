@@ -39,7 +39,7 @@ VPN:
   VPN Off:
     cmd: nordvpn disconnect
   Status:
-    cmd: nordvpn status | head -n 1 | awk '{if(/Status:/) print $4}'
+    cmd: /home/pi/bin/vpnstatus.sh
   Back:
     cmd: back
 

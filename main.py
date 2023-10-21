@@ -26,10 +26,7 @@ def showMain():
 
 def updateAppStatus():
     if gui.getAppStatusCmd() != None:
-        status = subprocess.check_output(gui.getAppStatusCmd(), shell=True).decode("utf-8")
-        print(gui.am.getCurrentApp().name+' status: '+status)
-        gui.am.getCurrentApp().status=status
-        dsp.showStatus(status)
+        dsp.showStatus(gui.am.getCurrentApp().status)
 
 def runAction():
     msg=gui.runAction()
@@ -47,7 +44,6 @@ def runAction():
             cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
             print("exec_msg: "+cmdmsg)
             dsp.showString(gui.runBack())
-            updateAppStatus()
              
         except:
             dsp.showString('exec fail')
@@ -80,21 +76,19 @@ def startSystemStatsTask():
 
 def appStatusThread():
     global onAppStatusTask
-    if not dsp.disp.power:
+    if not dsp.disp.power and gui.am.getAppsStatusCount() > 0:
         onAppStatusTask = False
         return
-    app = gui.am.getNextPendingApp()
-    if app != None:
-        try:
-            status = subprocess.check_output(app.sta_cmd, shell=True).decode("utf-8")
-            app.status = status
-            print(app.name+' status: '+status)
-            if app.name != gui.am.getCurrentApp().name:
-                updateAppStatus()
-            time.sleep(cfg.status_refresh_rate)
-        except:
-            print("status refresh fails!")
-        onAppStatusTask = False
+    try:
+        for app in gui.am.getAppsStatusList():
+            status = str(subprocess.check_output(app.sta_cmd, shell=True).decode("utf-8"))
+            print(app.name+' new status: '+status)
+            app.status=status
+        updateAppStatus()
+        time.sleep(cfg.status_refresh_rate)
+    except:
+        print("status refresh fails!")
+    onAppStatusTask = False
 
 def startAppStatusTask():
     global onAppStatusTask
@@ -144,7 +138,6 @@ GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
 
 # Show initial app
 showMain()
-updateAppStatus()
 
 # Main loop:
 while True:

@@ -52,8 +52,6 @@ class GuiManager():
     def getConfig(self):
         return self.am.cfg
             
-
-
 # gm = GuiManager()
 # gm.showNextApp()
 # gm.runAction()

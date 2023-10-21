@@ -10,8 +10,6 @@ class Display:
 
     WIDTH = 128
     HEIGHT = 32  # Change to 64 if needed
-    timer_screen = time.time()
-    mutex = threading.Lock()
 
     def __init__(self):
         # Create the I2C interface.
@@ -19,6 +17,10 @@ class Display:
         # Define the Reset Pin
         oled_reset = digitalio.DigitalInOut(board.D4)
         self.disp = adafruit_ssd1306.SSD1306_I2C(self.WIDTH, self.HEIGHT, i2c, addr=0x3C, reset=oled_reset)
+        # timer for auto disp off
+        self.timer_screen = time.time()
+        # general semaphore
+        self.mutex = threading.Lock()
 
         # Clear display.
         self.disp.fill(0)
@@ -54,7 +56,7 @@ class Display:
     def showStatus(self, msg):
         self.mutex.acquire()
         self.draw.rectangle((0, 18, self.w-1, self.h- 1), outline=0, fill=0)
-        self.draw.text((self.x, self.top + 25), msg[:20], font=self.fntS, fill=255)
+        self.draw.text((self.x, self.top + 25), msg[:21], font=self.fntS, fill=255)
         self.disp.image(self.image)
         self.disp.show()
         self.mutex.release()
@@ -64,7 +66,7 @@ class Display:
         self.draw.rectangle((0, 0, self.w, self.h), outline=0, fill=0)
         pos = 0
         for line in lines:
-            self.draw.text((self.x, self.top + pos),  line, font=self.fntS, fill=255)
+            self.draw.text((self.x, self.top + pos), line[:21], font=self.fntS, fill=255)
             pos = pos + 8
         self.disp.image(self.image)
         self.disp.show()
@@ -80,9 +82,3 @@ class Display:
             return
         if time.time() - self.timer_screen > time_off:
             self.disp.poweroff()
-
-
-
-
-
-

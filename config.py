@@ -71,7 +71,6 @@ class config:
 
     def laod_app(self, doc):
         for name in dict.fromkeys(doc):
-            # print(name)
             ap = app(name)
             for cmds in dict.fromkeys(doc[name]):
                 # print(' '+cmds+' -> '+doc[name][cmds]['cmd'])
