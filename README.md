@@ -74,7 +74,7 @@ WIFI:
     cmd: back
 ```
 
-In the `apps.yml` file you able to put your apps. There you will found more commented examples.
+In the [apps.yml](https://github.com/hpsaturn/pilauncher/blob/master/apps.yml) file you able to put your apps. There you will found more commented examples.
 
 **Reservated names**:
 
@@ -118,7 +118,7 @@ status_refresh_rate : 5 # status field of each app
 
 **OLED:**
 
-[![Wiring Adafruit 128x32 OLED display](screenshots/adafruit_128x32.jpg)](https://learn.adafruit.com/monochrome-oled-breakouts/python-wiring)
+[![Wiring Adafruit 128x32 OLED display](screenshots/adafruit_128x32.jpg)](https://learn.adafruit.com/monochrome-oled-breakouts/python-wiring)  
 [SSD1306 OLED Wiring](https://learn.adafruit.com/monochrome-oled-breakouts/python-wiring)
 
 **Buttons**:
