@@ -54,7 +54,7 @@ You able to launch this like a simple systemd service with:
 sudo service pilauncher start
 ```
 
-also it will be disponible after each reboot. You also could run it like a normal python app with `python3 main.py`
+it will be launched after each reboot. You also could run it like a normal python app with `python3 main.py` e.g for debugging your apps. Don't forget stop first the service before.
 
 ## App Launcher
 
@@ -101,6 +101,17 @@ VPN:
     cmd: /home/pi/bin/vpnstatus
   Back:
     cmd: back
+```
+
+## Settings
+
+In the `settings.yml` file you will found some minimal settings for now:
+
+```yaml
+auto_screen_off: True   # reduce CPU consumption and increase OLED life
+screen_time_off: 60     # time for auto screen off
+info_refresh_rate : 3   # real time refresh. Recommended 3 or more
+status_refresh_rate : 5 # status field of each app
 ```
 
 ## Wiring
