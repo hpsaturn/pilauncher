@@ -33,7 +33,7 @@ Pilauncher service install:
 
 ```bash
 cd ~/
-git clone 
+git clone git@github.com:hpsaturn/pilauncher.git
 cp -r pilauncher/utils ~/bin
 python3 -m add_service "/usr/bin/python3 /home/YOUR_USER/pilauncher/main.py" --user YOUR_USER --name "pilauncher"
 ```
@@ -110,3 +110,4 @@ ButtonRight -> PIN6
 
 ## Demo
 
+[![Youtube vide demo PiLauncher](screenshots/demo_youtube.jpg)](https://youtu.be/iNSw1nZpOEk?si=aX4mq4WVJhwrCm_X)
