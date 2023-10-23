@@ -129,25 +129,30 @@ def btn_right_cb(button):
 
         isBtnRgtPresed = False
 
-# GPIO buttons setup
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
-GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
 
-# Show initial app
-showMain()
+if __name__ == '__main__':
+    # GPIO buttons setup
+    print('Starting Raspi App Launcher ...')
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
+    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
 
-# Main loop:
-while True:
-    
-    if onStats and not onSystemStatsTask:
-        startSystemStatsTask()
-    if not onStats and not onAppStatusTask:
-        startAppStatusTask()
+    # Show initial app
+    showMain()
+    print('Startup complete')
+
+    # Main loop:
+    while True:
         
-    if cfg.auto_screen_off:
-        dsp.powerOffTimerLoop(cfg.screen_time_off)
+        if onStats and not onSystemStatsTask:
+            startSystemStatsTask()
+        if not onStats and not onAppStatusTask:
+            startAppStatusTask()
+            
+        if cfg.auto_screen_off:
+            dsp.powerOffTimerLoop(cfg.screen_time_off)
 
-    time.sleep(1)
+        time.sleep(1)
+ 

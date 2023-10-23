@@ -1,10 +1,11 @@
 from config import config
+import os
 
 class AppManager:
 
     def __init__(self):
-        # self.cfg = config('apps.yml','settings.yml')
-        self.cfg = config('/home/pi/pihead/apps.yml','/home/pi/pihead/settings.yml')
+        path=os.path.dirname(__file__)
+        self.cfg = config(path+'/apps.yml', path+'/settings.yml')
         self.app_count = self.cfg.getAppsCount()
         self.cur_app = 0
         self.app_status_count = len(self.cfg.status_reg)
