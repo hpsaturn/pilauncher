@@ -41,7 +41,7 @@ Pilauncher service install:
 
 ```bash
 cd ~/
-git clone git@github.com:hpsaturn/pilauncher.git
+git clone https://github.com/hpsaturn/pilauncher.git
 cp -r pilauncher/utils ~/bin
 python3 -m add_service "/usr/bin/python3 /home/YOUR_USER/pilauncher/main.py" --user YOUR_USER --name "pilauncher"
 ```
