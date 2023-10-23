@@ -2,6 +2,14 @@
 
 It is a RaspberryPi apps launcher from only two buttons on headless installations (without monitor or keyboard). You will able to configure any kind of application to launch with it, for example enable or disable your VPN or start your console emulators.
 
+<table>
+	<tr>
+		<td>
+			Don't forget to star ⭐ this repository
+		</td>
+	</tr>
+</table>
+
 ## Prerequisites
 
 Any one RaspberryPi device with Python3 support. If you don't know how to configure a headless on your Pi, [this documentation](https://www.raspberrypi.com/news/raspberry-pi-bullseye-update-april-2022/) could help you.
@@ -99,7 +107,8 @@ VPN:
 
 **OLED:**
 
-![Wiring Adafruit 128x32 OLED display](screenshots/adafruit_128x32.jpg)
+[![Wiring Adafruit 128x32 OLED display](screenshots/adafruit_128x32.jpg)](https://learn.adafruit.com/monochrome-oled-breakouts/python-wiring)
+[SSD1306 OLED Wiring](https://learn.adafruit.com/monochrome-oled-breakouts/python-wiring)
 
 **Buttons**:
 
@@ -111,3 +120,9 @@ ButtonRight -> PIN6
 ## Demo
 
 [![Youtube vide demo PiLauncher](screenshots/demo_youtube.jpg)](https://youtu.be/iNSw1nZpOEk?si=aX4mq4WVJhwrCm_X)
+
+## PCB and 3DPrint box
+
+Coming soon :D
+
+---
