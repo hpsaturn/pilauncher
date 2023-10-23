@@ -28,7 +28,7 @@ WIFI:
 ---
 VPN:
   Info:
-    l1: /home/pi/bin/vpnstatus.sh
+    l1: /home/pi/bin/vpnstatus
     l2: nordvpn status | grep City | awk '{if(/City:/) print "City:",$2}'
     l3: nordvpn status | grep IP | awk '{if(/IP:/) print "IP:",$2}'
     l4: nordvpn status | grep Transfer | awk '{if(/Transfer:/) print $2.$3,"/",$5.$6}'
@@ -39,7 +39,7 @@ VPN:
   VPN Off:
     cmd: nordvpn disconnect
   Status:
-    cmd: /home/pi/bin/vpnstatus.sh
+    cmd: /home/pi/bin/vpnstatus
   Back:
     cmd: back
 
@@ -48,8 +48,8 @@ SYSTEM:
   Info:
     l1: hostname -I | cut -d' ' -f1
     l2: cut -f 1 -d " " /proc/loadavg | awk '{print "CPU load:",$1}'
-    l3: /home/pi/bin/memory.sh
-    l4: /home/pi/bin/disk.sh
+    l3: /home/pi/bin/memory
+    l4: /home/pi/bin/disk
   Shutdown:
     cmd: sudo shutdown -h now
   Reboot:

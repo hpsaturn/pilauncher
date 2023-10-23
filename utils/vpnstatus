@@ -1,0 +1,9 @@
+#!/bin/bash
+status=`nordvpn status | grep Country | awk '{if(/Country:/) print $2}'`
+
+if [[ $status == "" ]]; then
+    status=`nordvpn status | head -n 1 | awk '{if(/Status:/) print $4}'`
+fi
+
+echo "$status"
+

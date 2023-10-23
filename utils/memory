@@ -1,0 +1,2 @@
+#!/bin/bash
+echo `free -m | awk 'NR==2{printf "Mem: %s/%s MB  %.2f%%", $3,$2,$3*100/$2 }'`
