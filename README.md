@@ -10,6 +10,10 @@ It is a RaspberryPi apps launcher from only two buttons on headless installation
 	</tr>
 </table>
 
+## Demo
+
+[![Youtube vide demo PiLauncher](screenshots/demo_youtube.jpg)](https://youtu.be/iNSw1nZpOEk?si=aX4mq4WVJhwrCm_X)
+
 ## Prerequisites
 
 Any one RaspberryPi device with Python3 support. If you don't know how to configure a headless on your Pi, [this documentation](https://www.raspberrypi.com/news/raspberry-pi-bullseye-update-april-2022/) could help you.
@@ -128,12 +132,12 @@ ButtonLeft  -> PIN23
 ButtonRight -> PIN6
 ```
 
-## Demo
-
-[![Youtube vide demo PiLauncher](screenshots/demo_youtube.jpg)](https://youtu.be/iNSw1nZpOEk?si=aX4mq4WVJhwrCm_X)
-
 ## PCB and 3DPrint box
 
-Coming soon :D
+Coming soon :D 
+
+## About
+
+Please follow the project updates in [Hackaday](https://hackaday.io/project/193324-raspberrypi-app-launcher)
 
 ---
