@@ -5,5 +5,9 @@ if [[ $status == "" ]]; then
     status=`nordvpn status | head -n 1 | awk '{if(/Status:/) print $4}'`
 fi
 
+if [[ $status == "" ]]; then
+    status="nordvpn missing?"
+fi
+
 echo "$status"
 

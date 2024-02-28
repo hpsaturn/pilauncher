@@ -1,3 +1,4 @@
+# Please put here your custom apps. These are some examples:
 ---
 HOTSPOT:
   Info:
@@ -34,6 +35,8 @@ VPN:
     l4: nordvpn status | grep Transfer | awk '{if(/Transfer:/) print $2.$3,"/",$5.$6}'
   Colombia:
     cmd: nordvpn connect Colombia
+  Alemania:
+    cmd: nordvpn connect Germany
   Argentina:
     cmd: nordvpn connect Argentina 
   VPN Off:
