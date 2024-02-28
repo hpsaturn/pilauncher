@@ -29,6 +29,7 @@ def updateAppStatus():
         dsp.showStatus(gui.am.getCurrentApp().status)
 
 def runAction():
+    global isBtnRgtPresed
     msg=gui.runAction()
     if 'exec::' in msg:
         cmd=msg.lstrip('exec::')
@@ -44,18 +45,20 @@ def runAction():
             cmdmsg = subprocess.check_output(cmd, shell=True).decode("utf-8")
             print("exec_msg: "+cmdmsg)
             dsp.showString(gui.runBack())
-             
         except:
             dsp.showString('exec fail')
     else:
         dsp.showString(msg)
         dsp.showStatus(gui.getAppStatus())
+    isBtnRgtPresed = False
 
 def systemStatsThread():
     global onSystemStatsTask
+    global isBtnRgtPresed
     # skip if display is off (power consumption improvement)
     if not dsp.disp.power:
         onSystemStatsTask = False
+        isBtnRgtPresed = False
         return
     
     app = gui.am.getCurrentApp()
@@ -66,6 +69,7 @@ def systemStatsThread():
 
     time.sleep(cfg.info_refresh_rate)
     onSystemStatsTask = False
+    isBtnRgtPresed = False
 
 def startSystemStatsTask():
     global onSystemStatsTask
@@ -126,9 +130,6 @@ def btn_right_cb(button):
         onStats = False
         runAction()
         dsp.powerOffTimerReset()
-
-        isBtnRgtPresed = False
-
 
 if __name__ == '__main__':
     # GPIO buttons setup
