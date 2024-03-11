@@ -132,9 +132,11 @@ ButtonLeft  -> PIN23
 ButtonRight -> PIN6
 ```
 
-## PCB and 3DPrint box
+## 3DPrint box
 
-Coming soon :D 
+Some photos of the side extension box, please enter [here](https://www.thingiverse.com/thing:6526901) or the last versions [here](https://github.com/hpsaturn/pilauncher/tree/master/box/side_extension).
+
+[![PiLauncher Thingiverse](screenshots/thingiverse00.jpg)](https://www.thingiverse.com/thing:6526901)
 
 ## About
 
