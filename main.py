@@ -40,7 +40,7 @@ def runAction():
         cmd=msg.lstrip('exec::')
         print("exec: "+cmd)
         if cmd == 'stats':
-            showInfo()        
+            showInfo()
             gui.runBack()
             return
         try:
@@ -140,8 +140,8 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
-    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
+    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=15)
+    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=15)
 
     # Show initial app
     showMain()

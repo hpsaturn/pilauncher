@@ -57,17 +57,20 @@ class config:
                 self.auto_screen_off = presets['auto_screen_off']
                 self.info_refresh_rate = presets['info_refresh_rate']
                 self.status_refresh_rate = presets['status_refresh_rate']
+                self.show_stats_on_boot = presets['show_stats_on_boot']
         except:
             print("bad settings file, load defaults..")
             self.screen_time_off = 30
             self.auto_screen_off = True
             self.info_refresh_rate = 3
             self.status_refresh_rate = 5
+            self.show_stats_on_boot = False
         
         print("settings:")
         print('screen_time_off: '+str(self.screen_time_off))
         print('auto_screen_off: '+str(self.auto_screen_off))
         print('info_refresh_rate: '+str(self.info_refresh_rate))
+        print('show_stats_on_boot: '+str(self.show_stats_on_boot))
 
     def laod_app(self, doc):
         for name in dict.fromkeys(doc):
