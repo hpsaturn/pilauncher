@@ -112,10 +112,11 @@ VPN:
 In the `settings.yml` file you will found some minimal settings for now:
 
 ```yaml
-auto_screen_off: True   # reduce CPU consumption and increase OLED life
-screen_time_off: 60     # time for auto screen off
-info_refresh_rate : 3   # real time refresh. Recommended 3 or more
-status_refresh_rate : 5 # status field of each app
+auto_screen_off: True     # reduce CPU consumption and increase OLED life
+screen_time_off: 60       # time for auto screen off
+info_refresh_rate : 3     # real time refresh. Recommended 3 or more
+status_refresh_rate : 5   # refresh for the status field of each app
+show_stats_on_boot: False # show the info stats of the first app in the boot
 ```
 
 ## Wiring

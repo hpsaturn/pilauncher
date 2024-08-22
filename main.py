@@ -28,6 +28,11 @@ def updateAppStatus():
     if gui.getAppStatusCmd() != None:
         dsp.showStatus(gui.am.getCurrentApp().status)
 
+def showInfo():
+    dsp.showStatus("loading..")
+    global onStats
+    onStats = True
+
 def runAction():
     global isBtnRgtPresed
     msg=gui.runAction()
@@ -35,9 +40,7 @@ def runAction():
         cmd=msg.lstrip('exec::')
         print("exec: "+cmd)
         if cmd == 'stats':
-            dsp.showStatus("loading..")
-            global onStats
-            onStats = True
+            showInfo()
             gui.runBack()
             return
         try:
@@ -52,7 +55,7 @@ def runAction():
         dsp.showStatus(gui.getAppStatus())
     isBtnRgtPresed = False
 
-def systemStatsThread():
+def appInfoThread():
     global onSystemStatsTask
     global isBtnRgtPresed
     # skip if display is off (power consumption improvement)
@@ -71,11 +74,11 @@ def systemStatsThread():
     onSystemStatsTask = False
     isBtnRgtPresed = False
 
-def startSystemStatsTask():
+def startAppInfoTask():
     global onSystemStatsTask
     onSystemStatsTask = True
     # Launch app status refresh thread
-    thr = threading.Thread(target=systemStatsThread)
+    thr = threading.Thread(target=appInfoThread)
     thr.start()
 
 def appStatusThread():
@@ -137,18 +140,23 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=10)
-    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=10)
+    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=15)
+    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=15)
 
     # Show initial app
     showMain()
     print('Startup complete')
 
+    # Show app stats (of the first app in app.yml)
+    # You should enable it on settings and the app should have the info section
+    if cfg.show_stats_on_boot:
+        showInfo()
+
     # Main loop:
     while True:
         
         if onStats and not onSystemStatsTask:
-            startSystemStatsTask()
+            startAppInfoTask()
         if not onStats and not onAppStatusTask:
             startAppStatusTask()
             
