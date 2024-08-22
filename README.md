@@ -80,6 +80,8 @@ WIFI:
 
 In the [apps.yml](https://github.com/hpsaturn/pilauncher/blob/master/apps.yml) file you able to put your apps. There you will found more commented examples.
 
+Also please review the wiki page with [full recipes guides](https://github.com/hpsaturn/pilauncher/wiki/Recipes)
+
 **Reservated names**:
 
 `cmd: back` -> it could help to return a previous level when you only have two buttos. For now the launcher only supports two buttons.
