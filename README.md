@@ -58,7 +58,7 @@ You able to launch this like a simple systemd service with:
 sudo service pilauncher start
 ```
 
-it will be launched after each reboot. You also could run it like a normal python app with `python3 main.py` e.g for debugging your apps. Don't forget stop first the service before.
+it will be launched after each reboot. You also could run it like a normal python app with `python3 main.py` e.g for debugging your apps. Don't forget stop first the service.
 
 ## App Launcher
 
