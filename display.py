@@ -41,8 +41,9 @@ class Display:
         self.top = -2
         self.x = 0
 
-        # Load default font.
-        self.fntS = ImageFont.load_default()
+        # Load default fonts
+        self.fntS = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 9) 
+        self.fntM = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 11) 
         self.fntB = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18) 
 
     def showString(self, msg):
@@ -55,8 +56,8 @@ class Display:
 
     def showStatus(self, msg):
         self.mutex.acquire()
-        self.draw.rectangle((0, 18, self.w-1, self.h- 1), outline=0, fill=0)
-        self.draw.text((self.x, self.top + 25), msg[:21], font=self.fntS, fill=255)
+        self.draw.rectangle((0, 18, self.w-1, self.h-1), outline=0, fill=0)
+        self.draw.text((self.x, self.top + 22), msg[:21], font=self.fntM, fill=255)
         self.disp.image(self.image)
         self.disp.show()
         self.mutex.release()

@@ -59,7 +59,4 @@ class GuiManager():
 # gm.showNextApp()
 # gm.runAction()
 # gm.runAction()
-    
-
-
 
