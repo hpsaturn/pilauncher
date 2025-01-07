@@ -25,7 +25,7 @@ Enter via SSH in your RaspberryPi and run the next steps:
 Raspberry OS dependencies:
 
 ```bash
-sudo apt install git python3-venv python3-dev
+sudo apt install git python3-venv python3-dev libopenjp2-7
 ```
 
 Python dependencies:
