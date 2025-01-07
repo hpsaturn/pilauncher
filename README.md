@@ -35,7 +35,7 @@ python3 -m venv ~/.local
 ~/.local/bin/pip install adafruit-circuitpython-ssd1306 pyyaml pillow Adafruit_PureIO add_service
 ```
 
-I2C enable:
+Enable I2C suppport:
 
 ```bash
 sudo raspi-config nonint do_i2c 0
@@ -46,8 +46,13 @@ Pilauncher service install:
 ```bash
 cd ~/
 git clone https://github.com/hpsaturn/pilauncher.git
-cp -r pilauncher/utils ~/bin
 python3 -m add_service "/usr/bin/python3 /home/YOUR_USER/pilauncher/main.py" --user YOUR_USER --name "pilauncher"
+```
+
+(Optional) install the utils scripts to your bin user directory:
+
+```bash
+cp -r ~/pilauncher/utils/* ~/bin/
 ```
 
 ## First run
