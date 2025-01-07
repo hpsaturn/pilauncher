@@ -140,8 +140,8 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(BTNLFT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BTNRGT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=15)
-    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=15)
+    GPIO.add_event_detect(BTNLFT, GPIO.BOTH, callback=btn_left_cb, bouncetime=200)
+    GPIO.add_event_detect(BTNRGT, GPIO.BOTH, callback=btn_right_cb, bouncetime=200)
 
     # Show initial app
     showMain()
