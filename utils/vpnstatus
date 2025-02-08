@@ -2,11 +2,7 @@
 status=`nordvpn status | grep Country | awk '{if(/Country:/) print $2}'`
 
 if [[ $status == "" ]]; then
-    status=`nordvpn status | head -n 1 | awk '{if(/Status:/) print $4}'`
-fi
-
-if [[ $status == "" ]]; then
-    status="nordvpn missing?"
+    status=`nordvpn status | head -n 1 | awk '{if(/Status:/) print $2}'`
 fi
 
 echo "$status"
